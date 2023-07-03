@@ -56,7 +56,7 @@ For example::
 
 
 def connect(url, max_retries=None, auth=None, authentication=None, avatica_user=None, avatica_password=None,
-            truststore=None, verify=None, do_as=None, user=None, password=None, **kwargs):
+            truststore=None, verify=None, do_as=None, user=None, password=None, extra_headers=None, **kwargs):
     """Connects to a Phoenix query server.
 
     :param url:
@@ -109,6 +109,9 @@ def connect(url, max_retries=None, auth=None, authentication=None, avatica_user=
     :param truststore:
         Alias for verify
 
+    :param extra_headers:
+        Additional HTTP headers as a dictionary
+
     :returns:
         :class:`~phoenixdb.connection.Connection` object.
     """
@@ -118,9 +121,17 @@ def connect(url, max_retries=None, auth=None, authentication=None, avatica_user=
         avatica_user=avatica_user, avatica_password=avatica_password,
         truststore=truststore, verify=verify, do_as=do_as, user=user, password=password)
 
-    client = AvaticaClient(url, max_retries=max_retries, auth=auth, verify=verify)
+    client = AvaticaClient(url, max_retries=max_retries, auth=auth, verify=verify, extra_headers=extra_headers)
     client.connect()
     return Connection(client, **kwargs)
+
+
+def _get_SPNEGOAuth():
+    try:
+        spnego = gssapi.mechs.Mechanism.from_sasl_name("SPNEGO")
+    except AttributeError:
+        spnego = gssapi.OID.from_int_seq("1.3.6.1.5.5.2")
+    return HTTPSPNEGOAuth(opportunistic_auth=True, mech=spnego)
 
 
 def _process_args(
@@ -176,14 +187,10 @@ def _process_args(
 
     if auth == "SPNEGO":
         # Special case for backwards compatibility
-        auth = HTTPSPNEGOAuth(opportunistic_auth=True)
+        auth = _get_SPNEGOAuth()
     elif auth is None and authentication is not None:
         if authentication == "SPNEGO":
-            try:
-                spnego = gssapi.mechs.Mechanism.from_sasl_name("SPNEGO")
-            except AttributeError:
-                spnego = gssapi.OID.from_int_seq("1.3.6.1.5.5.2")
-            auth = HTTPSPNEGOAuth(opportunistic_auth=True, mech=spnego)
+            auth = _get_SPNEGOAuth()
         elif authentication == "BASIC" and avatica_user is not None and avatica_password is not None:
             auth = HTTPBasicAuth(avatica_user, avatica_password)
         elif authentication == "DIGEST" and avatica_user is not None and avatica_password is not None:

@@ -41,7 +41,6 @@ if setuptools.__version__ < '20.8.1':
         'protobuf>=3.0.0',
         'requests',
         'requests-gssapi',
-        'SQLAlchemy'
     ]
     if sys.version_info < (3,6):
         install_requires.append('gssapi<1.6.0')
@@ -53,13 +52,12 @@ else:
         'requests',
         'requests-gssapi',
         'gssapi<1.6.0;python_version<"3.6"',
-        'SQLAlchemy'
     ]
     setup_requires=[
         'Sphinx;python_version>="3.6"',
     ],
 
-version = "1.1.1.dev0"
+version = "1.2.2.dev0"
 
 setup(
     name="phoenixdb",
@@ -84,16 +82,15 @@ setup(
         'Programming Language :: Python :: 2',
         'Programming Language :: Python :: 2.7',
         'Programming Language :: Python :: 3',
-        'Programming Language :: Python :: 3.4',
         'Programming Language :: Python :: 3.5',
         'Programming Language :: Python :: 3.6',
         'Programming Language :: Python :: 3.7',
         'Programming Language :: Python :: 3.8',
+        'Programming Language :: Python :: 3.9',
+        'Programming Language :: Python :: 3.10',
+        'Programming Language :: Python :: 3.11'
     ],
     install_requires=install_requires,
-    extras_require={
-        'SQLAlchemy': ['SQLAlchemy'],
-    },
     tests_require=[
         'SQLAlchemy',
         'nose',

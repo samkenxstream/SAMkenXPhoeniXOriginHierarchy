@@ -1,3 +1,5 @@
+#!/bin/bash -l
+
 # Licensed to the Apache Software Foundation (ASF) under one or more
 # contributor license agreements.  See the NOTICE file distributed with
 # this work for additional information regarding copyright ownership.
@@ -13,26 +15,11 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-[tox]
-envlist = py27-SQLAlchemy{13,14},
-  py35-SQLAlchemy{13},
-  py36-SQLAlchemy{13,14},
-  py37-SQLAlchemy{13,14,20},
-  py38-SQLAlchemy{13,14,20},
-  py39-SQLAlchemy{13,14,20},
-  py310-SQLAlchemy{13,14,20},
-  py311-SQLAlchemy{13,14,20}
-[testenv]
-passenv = PHOENIXDB_TEST_DB_URL
-commands =
-  flake8 phoenixdb  
-  pytest {posargs}
-deps = -rrequirements.txt
-  pytest
-  flake8
-  SQLAlchemy13: SQLAlchemy >=1.3.0, < 1.4.0
-  SQLAlchemy14: SQLAlchemy >=1.4.0, < 2.0.0
-  SQLAlchemy20: SQLAlchemy >= 2.0.0
-[pytest]
-testpaths =
-    phoenixdb/tests
+set -e
+if [ "$#" -eq 0 ]; then
+  find /src -mindepth 1 -maxdepth 1 \( -type d -name ".*" -prune \) -o -exec cp -r --target-directory=/app -- {} +
+  # Then run tox
+  tox
+else
+  exec "$@"
+fi

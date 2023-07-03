@@ -1,6 +1,37 @@
 Changelog
 =========
 
+Unreleased
+----------
+- Update python-phoenixdb/RELEASING.rst (PHOENIX-6820)
+- Add Python 3.11 to supported languages and update docker test image for phoenixdb (PHOENIX-6858)
+- Document workaround for PhoenixDB 1.2+ not working with Python2 on some systems (PHOENIX-6863)
+- Update install instructions in README.rst (PHOENIX-6812)
+- Add support for SQLAlchemy 2.0 (PHOENIX-6892)
+- SQLAlchemy is no longer an install dependency (PHOENIX-6892)
+- Run tests with all supported Python + SqlAlchemy versions (1.3, 1.4, 2.0) (PHOENIX-6892)
+- Replace deprecated failUnless methods in tests (PHOENIX-6892)
+- Add support for specifying custom HTTP headers (PHOENIX-6921)
+- Use JDBC/Avatica column label as column name when set (PHOENIX-6917)
+- Do not throw exception when shutting down Python with open connections (PHOENIX-6926)
+
+Version 1.2.1
+-------------
+- Defined authentication mechanism for SPNEGO explicitly (PHOENIX-6781)
+- Fixed failing docker build because of missing files (PHOENIX-6801)
+- Fixed make_rc.sh script on mac (PHOENIX-6803)
+- Fixed flaky tests
+
+Version 1.2.0
+-------------
+
+- Updated test environment to support Python 3.9 and 3.10 (PHOENIX-6737)
+- Fixed get_view_names() in SqlAlchemy driver (PHOENIX-6727)
+- Added supports_statement_cache attribute for SqlAlchemy dialect to avoid warnings (PHOENIX-6735)
+- Re-generated the protobuf Python files with protoc 3.19 from the Avatica 1.21 descriptors (PHOENIX-6731)
+- Re-added phoenixdb requirements (PHOENIX-6811)
+- Dropped support for Python 3.4 (PHOENIX-6731)
+
 Version 1.1.0
 -------------
 
